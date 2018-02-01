@@ -2,6 +2,7 @@
 using Prism.Modularity;
 using Prism.Regions;
 using System.ComponentModel.Composition;
+using System.Threading.Tasks;
 
 namespace Kuando.Control.Modules.GoogleHangouts
 {
@@ -24,7 +25,9 @@ namespace Kuando.Control.Modules.GoogleHangouts
             this._regionManager.RegisterViewWithRegion("NavigationRegion", typeof(Views.Navigation));
             this._regionManager.RegisterViewWithRegion("SettingsRegion", typeof(Views.Settings));
 
-            hangoutsDetector.Run();
+            var hangoutsDetectorTask = new Task(() => hangoutsDetector.Run(), TaskCreationOptions.LongRunning);
+
+            hangoutsDetectorTask.Start();
         }
 
         #endregion
