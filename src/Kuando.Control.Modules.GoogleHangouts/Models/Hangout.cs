@@ -3,18 +3,23 @@ using System;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Automation;
-using Condition = System.Windows.Automation.Condition;
 
-namespace Kuando.Control.Modules.GoogleHangouts
+namespace Kuando.Control.Modules.GoogleHangouts.Models
 {
     [Export]
-    public class HangoutsDetector
+    public class Hangout
     {
+        #region Properties
+
+        public bool IsActive { get; private set; }
+
+        #endregion
+
         #region Methods
 
-        public void Run()
+        public async void Monitor()
         {
             var busyLight = new SDK();
 
@@ -57,16 +62,24 @@ namespace Kuando.Control.Modules.GoogleHangouts
                             Condition condTabItem =
                                 new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.TabItem);
 
-                            busyLight.Light(
-                                elmTabStrip.FindAll(TreeScope.Children, condTabItem).Cast<AutomationElement>()
-                                    .Where(tabitem => tabitem.Current.Name.Contains("Google Hangouts")).ToList().Any()
-                                    ? BusylightColor.Red
-                                    : BusylightColor.Green);
+                            if (elmTabStrip.FindAll(TreeScope.Children, condTabItem).Cast<AutomationElement>()
+                                .Where(tabitem => tabitem.Current.Name.Contains("Google Hangouts")).ToList().Any())
+                            {
+                                busyLight.Light(BusylightColor.Red);
+
+                                this.IsActive = true;
+                            }
+                            else
+                            {
+                                busyLight.Light(BusylightColor.Green);
+
+                                this.IsActive = false;
+                            }
                         }
                     }
                 }
 
-                Thread.Sleep(5000);
+                await Task.Delay(5000);
             }
 
         }

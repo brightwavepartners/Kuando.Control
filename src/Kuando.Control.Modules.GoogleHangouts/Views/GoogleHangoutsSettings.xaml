@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="Kuando.Control.Modules.GoogleHangouts.Views.GoogleHangoutsSettings"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mvvm="http://prismlibrary.com/"
+             mc:Ignorable="d"
+             Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContentControl}}, Path=ActualWidth}"
+             VerticalAlignment="Top"
+             HorizontalAlignment="Left"
+             mvvm:ViewModelLocator.AutoWireViewModel="True">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+
+    <TextBlock Grid.Row="0" HorizontalAlignment="Center" FontWeight="Bold">Google Hangouts Settings</TextBlock>
+
+    <CheckBox Grid.Row="1" Margin="0,10,0,0" IsChecked="{Binding IsEnabled}">Enabled</CheckBox>
+
+    <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,10,0,0">
+      <Label>Browser Tab Title</Label>
+      <TextBox Width="200"></TextBox>
+    </StackPanel>
+  </Grid>
+
+  
+</UserControl>

@@ -4,18 +4,17 @@ using System.Windows.Controls;
 namespace Kuando.Control.Modules.VisualStudioTeamServices.Views
 {
     /// <summary>
-    /// Interaction logic for Settings.xaml
+    /// Interaction logic for VisualStudioTeamServicesNavigationView.xaml
     /// </summary>
     [Export]
-    public partial class Settings : UserControl
+    public partial class VisualStudioTeamServicesNavigation : UserControl
     {
         #region Constructors
 
-        public Settings()
+        public VisualStudioTeamServicesNavigation()
         {
             this.InitializeComponent();
         }
-
 
         #endregion
     }

@@ -4,18 +4,17 @@ using System.Windows.Controls;
 namespace Kuando.Control.Modules.GoogleHangouts.Views
 {
     /// <summary>
-    /// Interaction logic for Settings.xaml
+    /// Interaction logic for GoogleHangoutsNavigation.xaml
     /// </summary>
     [Export]
-    public partial class Settings : UserControl
+    public partial class GoogleHangoutsNavigation : UserControl
     {
         #region Constructors
 
-        public Settings()
+        public GoogleHangoutsNavigation()
         {
             this.InitializeComponent();
         }
-
 
         #endregion
     }

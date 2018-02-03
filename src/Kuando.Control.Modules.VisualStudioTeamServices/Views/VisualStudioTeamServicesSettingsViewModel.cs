@@ -4,14 +4,14 @@ using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Windows.Input;
 
-namespace Kuando.Control.Modules.GoogleHangouts.Views
+namespace Kuando.Control.Modules.VisualStudioTeamServices.Views
 {
     [Export]
-    public class SettingsViewModel : BindableBase
+    public class VisualStudioTeamServicesSettingsViewModel : BindableBase
     {
         #region Constructors
 
-        public SettingsViewModel()
+        public VisualStudioTeamServicesSettingsViewModel()
         {
             this.SubmitCommand = new DelegateCommand<object>(this.OnSubmit, this.CanSubmit);
         }

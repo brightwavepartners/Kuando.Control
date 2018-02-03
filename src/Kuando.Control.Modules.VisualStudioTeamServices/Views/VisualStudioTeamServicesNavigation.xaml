@@ -1,14 +1,13 @@
-﻿<UserControl x:Class="Kuando.Control.Modules.GoogleHangouts.Views.Settings"
+﻿<UserControl x:Class="Kuando.Control.Modules.VisualStudioTeamServices.Views.VisualStudioTeamServicesNavigation"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Kuando.Control.Modules.GoogleHangouts.Views"
              xmlns:mvvm="http://prismlibrary.com/"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              mvvm:ViewModelLocator.AutoWireViewModel="True">
   <Grid>
-    <Button Width="50" Height="50" Command="{Binding Path=SubmitCommand}" CommandParameter="SubmitOrder">Hangout</Button>
+    <Button Width="110" Height="30" Command="{Binding Path=NavigateCommand}">VSTS</Button>
   </Grid>
 </UserControl>

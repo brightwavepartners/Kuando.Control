@@ -61,14 +61,14 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Views\Navigation.xaml.cs">
-      <DependentUpon>Navigation.xaml</DependentUpon>
+    <Compile Include="Views\VisualStudioTeamServicesNavigation.xaml.cs">
+      <DependentUpon>VisualStudioTeamServicesNavigation.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NavigationViewModel.cs" />
-    <Compile Include="Views\Settings.xaml.cs">
-      <DependentUpon>Settings.xaml</DependentUpon>
+    <Compile Include="Views\VisualStudioTeamServicesNavigationViewModel.cs" />
+    <Compile Include="Views\VisualStudioTeamServicesSettings.xaml.cs">
+      <DependentUpon>VisualStudioTeamServicesSettings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SettingsViewModel.cs" />
+    <Compile Include="Views\VisualStudioTeamServicesSettingsViewModel.cs" />
     <Compile Include="VisualStudioTeamServicesModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -76,11 +76,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Views\Navigation.xaml">
+    <Page Include="Views\VisualStudioTeamServicesNavigation.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Settings.xaml">
+    <Page Include="Views\VisualStudioTeamServicesSettings.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
