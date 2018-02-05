@@ -1,3 +1,5 @@
+This project is still under development.....
+
 Adding a new module:
 1. Add a new project following the nameing pattern Kuando.Control.Modules.<modulename>
 2. Add NuGet packages Prism.Wpf and Prism.Mef
