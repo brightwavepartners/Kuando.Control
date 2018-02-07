@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuando.Control", "src\Kuand
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuando.Control.Modules.VisualStudioTeamServices", "src\Kuando.Control.Modules.VisualStudioTeamServices\Kuando.Control.Modules.VisualStudioTeamServices.csproj", "{B472B53E-F2BF-47A0-8805-27B643E04A06}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuando.Control.Infrastructure", "src\Kuando.Control.Infrastructure\Kuando.Control.Infrastructure.csproj", "{05E7957D-2B30-4B40-88A3-776498674646}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{B472B53E-F2BF-47A0-8805-27B643E04A06}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B472B53E-F2BF-47A0-8805-27B643E04A06}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B472B53E-F2BF-47A0-8805-27B643E04A06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05E7957D-2B30-4B40-88A3-776498674646}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05E7957D-2B30-4B40-88A3-776498674646}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05E7957D-2B30-4B40-88A3-776498674646}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05E7957D-2B30-4B40-88A3-776498674646}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -40,6 +46,7 @@ Global
 		{C2D3FC2E-5E86-4BD9-B757-6D35CD70EA07} = {BB365880-AB00-4E1B-8FE5-58BACA3F3C4B}
 		{D73C355A-11D6-4933-A1E2-D433498018DB} = {BB365880-AB00-4E1B-8FE5-58BACA3F3C4B}
 		{B472B53E-F2BF-47A0-8805-27B643E04A06} = {BB365880-AB00-4E1B-8FE5-58BACA3F3C4B}
+		{05E7957D-2B30-4B40-88A3-776498674646} = {BB365880-AB00-4E1B-8FE5-58BACA3F3C4B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B29E64B9-24B2-4AFD-A1C1-0E649920CF65}

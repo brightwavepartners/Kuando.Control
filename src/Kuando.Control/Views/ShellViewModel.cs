@@ -54,6 +54,10 @@ namespace Kuando.Control.Views
             this._notifyIcon.ContextMenuStrip = new ContextMenuStrip();
             this._notifyIcon.ContextMenuStrip.Items.Add("Open").Click += (sender, args) => this.ShowShell();
             this._notifyIcon.ContextMenuStrip.Items.Add("-");
+            this._notifyIcon.ContextMenuStrip.Items.Add("Red");
+            this._notifyIcon.ContextMenuStrip.Items.Add("Yellow");
+            this._notifyIcon.ContextMenuStrip.Items.Add("Green");
+            this._notifyIcon.ContextMenuStrip.Items.Add("-");
             this._notifyIcon.ContextMenuStrip.Items.Add("Exit").Click += (senders, args) => this.ExitApplication();
         }
 

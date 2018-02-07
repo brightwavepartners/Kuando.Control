@@ -1,55 +1,34 @@
-﻿using System;
+﻿using Busylight;
+using System;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Automation;
+using Condition = System.Windows.Automation.Condition;
 
-namespace Kuando.Control.Modules.GoogleHangouts.Models
+namespace Kuando.Control.Modules.GoogleHangouts
 {
     [Export]
-    public class Hangout
+    public class HangoutsDetector
     {
-        #region Fields
-
-        public event EventHandler<ActiveChangedEventArgs> OnActiveChanged;
-
-        private bool _isActive;
-
-        #endregion
-
-        #region Properties
-
-        public bool IsActive
-        {
-            get => this._isActive;
-
-            private set
-            {
-                if (value == this._isActive)
-                {
-                    return;
-                }
-
-                this._isActive = value;
-
-                this.RaiseActiveChanged();
-            }
-        }
-
-        #endregion
-
         #region Methods
 
-        public async void Monitor()
+        public void Run()
         {
+            var busyLight = new SDK();
+
+            var busyLights = busyLight.GetAttachedBusylightDeviceList();
+
+            busyLight.Light(BusylightColor.Green);
+
             while (true)
             {
                 var chromeProcesses = Process.GetProcessesByName("chrome");
 
-                if (!chromeProcesses.Any())
+                if (!busyLights.Any() || !chromeProcesses.Any())
                 {
-                    this.IsActive = false;
+                    busyLight.Light(BusylightColor.Green);
                 }
                 else
                 {
@@ -78,23 +57,18 @@ namespace Kuando.Control.Modules.GoogleHangouts.Models
                             Condition condTabItem =
                                 new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.TabItem);
 
-                            this.IsActive = elmTabStrip.FindAll(TreeScope.Children, condTabItem)
-                                .Cast<AutomationElement>()
-                                .Where(tabitem => tabitem.Current.Name.Contains("Google Hangouts")).ToList().Any();
+                            busyLight.Light(
+                                elmTabStrip.FindAll(TreeScope.Children, condTabItem).Cast<AutomationElement>()
+                                    .Where(tabitem => tabitem.Current.Name.Contains("Google Hangouts")).ToList().Any()
+                                    ? BusylightColor.Red
+                                    : BusylightColor.Green);
                         }
                     }
                 }
 
-                await Task.Delay(5000);
+                Thread.Sleep(5000);
             }
 
-        }
-
-        protected virtual void RaiseActiveChanged()
-        {
-            var handler = this.OnActiveChanged;
-
-            handler?.Invoke(this, new ActiveChangedEventArgs(this.IsActive));
         }
 
         #endregion

@@ -124,5 +124,11 @@
   <ItemGroup>
     <None Include="Resources\kuando.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kuando.Control.Infrastructure\Kuando.Control.Infrastructure.csproj">
+      <Project>{05e7957d-2b30-4b40-88a3-776498674646}</Project>
+      <Name>Kuando.Control.Infrastructure</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
