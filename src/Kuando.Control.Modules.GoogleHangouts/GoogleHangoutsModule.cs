@@ -1,8 +1,8 @@
 ﻿using System;
 using System.ComponentModel.Composition;
-using System.Threading.Tasks;
 using Kuando.Control.Infrastructure.Events;
 using Kuando.Control.Infrastructure.Models;
+using Kuando.Control.Modules.GoogleHangouts.Events;
 using Kuando.Control.Modules.GoogleHangouts.Models;
 using Kuando.Control.Modules.GoogleHangouts.Repositories;
 using Microsoft.Practices.ServiceLocation;
@@ -18,11 +18,8 @@ namespace Kuando.Control.Modules.GoogleHangouts
     {
         #region Fields
 
-        private const string HangoutsMonitorEnabledConfigKey = "Enabled";
-
         private readonly IEventAggregator _eventAggregator;
         private readonly Hangout _hangout;
-        private readonly Task _hangoutMonitorTask;
         private readonly IRegionManager _regionManager;
         private readonly SettingRepository _settingRepository;
 
@@ -34,20 +31,20 @@ namespace Kuando.Control.Modules.GoogleHangouts
         public GoogleHangoutsModule(IRegionManager regionManager, IEventAggregator eventAggregator, SettingRepository settingRepository, Hangout hangout)
         {
             this._eventAggregator = eventAggregator;
-            this._regionManager = regionManager;
-            this._settingRepository = settingRepository;
+            this._eventAggregator.GetEvent<GoogleHangoutSettingEvent>().Subscribe(this.OnGoogleHangoutSettingChanged);
 
+            this._regionManager = regionManager;
             this._regionManager.RegisterViewWithRegion("NavigationRegion", () => ServiceLocator.Current.GetInstance<Views.GoogleHangoutsNavigation>());
             this._regionManager.RegisterViewWithRegion("SettingsRegion", typeof(Views.GoogleHangoutsSettings));
 
             this._hangout = hangout;
             hangout.OnActiveChanged += this.OnHangoutActiveChanged;
 
-            this._hangoutMonitorTask = new Task(hangout.Monitor, TaskCreationOptions.LongRunning);
+            this._settingRepository = settingRepository;
 
-            if (Convert.ToBoolean(this._settingRepository.GetSetting(HangoutsMonitorEnabledConfigKey)))
+            if (Convert.ToBoolean(this._settingRepository[SettingRepository.Enabled].Value))
             {
-                this._hangoutMonitorTask.Start();
+                this._hangout.StartMonitor();
             }
         }
 
@@ -62,7 +59,7 @@ namespace Kuando.Control.Modules.GoogleHangouts
 
         private void OnHangoutActiveChanged(object sender, ActiveChangedEventArgs eventArgs)
         {
-            var hangoutsEnabled = Convert.ToBoolean(this._settingRepository.GetSetting(HangoutsMonitorEnabledConfigKey));
+            var hangoutsEnabled = Convert.ToBoolean(this._settingRepository[SettingRepository.Enabled].Value);
             var hangoutsActive = eventArgs.Active;
 
             if (!hangoutsEnabled)
@@ -71,6 +68,29 @@ namespace Kuando.Control.Modules.GoogleHangouts
             }
 
             this._eventAggregator.GetEvent<BusyLightColorEvent>().Publish(hangoutsActive ? Color.Red : Color.Green);
+        }
+
+        private void OnGoogleHangoutSettingChanged(Setting setting)
+        {
+            if (setting.Key != SettingRepository.Enabled)
+            {
+                return;
+            }
+
+            if (Convert.ToBoolean(setting.Value))
+            {
+                if (this._hangout.IsActive)
+                {
+                    this._eventAggregator.GetEvent<BusyLightColorEvent>().Publish(Color.Red);
+                }
+
+                this._hangout.StartMonitor();
+            }
+            else
+            {
+                this._hangout.StopMonitor();
+                this._eventAggregator.GetEvent<BusyLightColorEvent>().Publish(Color.Green);
+            }
         }
 
         #endregion

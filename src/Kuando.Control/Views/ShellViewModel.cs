@@ -4,8 +4,11 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
+using Kuando.Control.Infrastructure.Events;
+using Kuando.Control.Infrastructure.Models;
 using Kuando.Control.Infrastructure.Services;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 using Application = System.Windows.Application;
 
@@ -17,6 +20,7 @@ namespace Kuando.Control.Views
         #region Fields
 
         private readonly BusyLightService _busyLightService;
+        private readonly IEventAggregator _eventAggregator;
 
         private bool _isExit;
         private NotifyIcon _notifyIcon;
@@ -26,9 +30,10 @@ namespace Kuando.Control.Views
         #region Constructors
 
         [ImportingConstructor]
-        public ShellViewModel(BusyLightService busyLightService)
+        public ShellViewModel(IEventAggregator eventAggregator, BusyLightService busyLightService)
         {
             this._busyLightService = busyLightService;
+            this._eventAggregator = eventAggregator;
 
             if (Application.Current.MainWindow != null)
             {
@@ -60,13 +65,12 @@ namespace Kuando.Control.Views
             this._notifyIcon.ContextMenuStrip = new ContextMenuStrip();
             this._notifyIcon.ContextMenuStrip.Items.Add("Open").Click += (sender, args) => this.ShowShell();
             this._notifyIcon.ContextMenuStrip.Items.Add("-");
-            this._notifyIcon.ContextMenuStrip.Items.Add("Red");
-            this._notifyIcon.ContextMenuStrip.Items.Add("Yellow");
-            this._notifyIcon.ContextMenuStrip.Items.Add("Green");
+            this._notifyIcon.ContextMenuStrip.Items.Add("Red").Click += (sender, args) => this.SetBusyLightColor(Color.Red);
+            this._notifyIcon.ContextMenuStrip.Items.Add("Yellow").Click += (sender, args) => this.SetBusyLightColor(Color.Yellow);
+            this._notifyIcon.ContextMenuStrip.Items.Add("Green").Click += (sender, args) => this.SetBusyLightColor(Color.Green);
             this._notifyIcon.ContextMenuStrip.Items.Add("-");
             this._notifyIcon.ContextMenuStrip.Items.Add("Exit").Click += (senders, args) => this.ExitApplication();
         }
-
 
         private void ExitApplication()
         {
@@ -91,6 +95,11 @@ namespace Kuando.Control.Views
         private void OnWindowClosing(Window e)
         {
             Debug.WriteLine("OnWindowClosing");
+        }
+
+        private void SetBusyLightColor(Color color)
+        {
+            this._eventAggregator.GetEvent<BusyLightColorEvent>().Publish(color);
         }
 
         private void ShowShell()

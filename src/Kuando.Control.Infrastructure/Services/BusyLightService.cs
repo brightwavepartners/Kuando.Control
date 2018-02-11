@@ -36,6 +36,8 @@ namespace Kuando.Control.Infrastructure.Services
 
         private void SetColor(Color color)
         {
+            Debug.WriteLine($"DEBUG: Setting color for any attached BusyLights to {color}");
+
             foreach (var busyLight in this._busyLightRepository.GetAll().ToList())
             {
                 busyLight.Color = color;

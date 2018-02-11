@@ -13,36 +13,22 @@ namespace Kuando.Control.Modules.GoogleHangouts.Repositories
 
         private const string GoogleHangoutsConfigurationSectionName = "googleHangouts";
 
-        private List<Setting> _settings;
-
-        #endregion
-
-        #region Constructors
-
-        public SettingRepository()
-        {
-            var configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-
-            var googleHangoutsConfigurationSectionSettings =
-                ((AppSettingsSection)configFile.GetSection(GoogleHangoutsConfigurationSectionName)).Settings;
-
-            this._settings = new List<Setting>();
-
-            foreach (KeyValueConfigurationElement googleHangoutsConfigurationSectionSetting in googleHangoutsConfigurationSectionSettings)
-            {
-                this._settings.Add(new Setting(googleHangoutsConfigurationSectionSetting.Key,
-                    googleHangoutsConfigurationSectionSetting.Value));
-            }
-        }
-
         #endregion
 
         #region Properties
 
+        public static string Enabled => "Enabled";
+
         public Setting this[object key]
         {
-            get => throw new System.NotImplementedException();
-            set => throw new System.NotImplementedException();
+            get => new Setting(key.ToString(), GetSetting(key.ToString()));
+
+            set
+            {
+                SaveSetting(key.ToString(), value.Value);
+
+                Debug.WriteLine($"{key}:{value.Value}");
+            }
         }
 
         #endregion
@@ -59,7 +45,12 @@ namespace Kuando.Control.Modules.GoogleHangouts.Repositories
             throw new System.NotImplementedException();
         }
 
-        public string GetSetting(string key)
+        public void Remove(Setting item)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private static string GetSetting(string key)
         {
             var configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 
@@ -69,12 +60,7 @@ namespace Kuando.Control.Modules.GoogleHangouts.Repositories
             return googleHangoutsConfigurationSectionSettings[key].Value;
         }
 
-        public void Remove(Setting item)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void SaveSetting(string key, string value)
+        private static void SaveSetting(string key, string value)
         {
             var configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 

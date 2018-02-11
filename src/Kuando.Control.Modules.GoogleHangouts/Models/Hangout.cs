@@ -2,12 +2,9 @@
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Automation;
-using Kuando.Control.Infrastructure.Events;
-using Kuando.Control.Infrastructure.Models;
-using Kuando.Control.Modules.GoogleHangouts.Repositories;
-using Prism.Events;
 
 namespace Kuando.Control.Modules.GoogleHangouts.Models
 {
@@ -20,6 +17,9 @@ namespace Kuando.Control.Modules.GoogleHangouts.Models
         private const string BrowserGoogleHangoutsTabText = "Google Hangouts";
         private const string ChromeProcessName = "chrome";
 
+        private CancellationToken _hangoutMonitorCancellationToken;
+        private CancellationTokenSource _hangoutMonitorCancellationTokenSource;
+        private Task _hangoutMonitorTask;
         private bool _isActive;
 
         public event EventHandler<ActiveChangedEventArgs> OnActiveChanged;
@@ -53,10 +53,27 @@ namespace Kuando.Control.Modules.GoogleHangouts.Models
 
         #region Methods
 
-        public async void Monitor()
+        public void StartMonitor()
         {
-            while (true)
+            this._hangoutMonitorCancellationTokenSource = new CancellationTokenSource();
+            this._hangoutMonitorCancellationToken = this._hangoutMonitorCancellationTokenSource.Token;
+
+            this._hangoutMonitorTask = new Task(this.Monitor, this._hangoutMonitorCancellationToken, TaskCreationOptions.LongRunning);
+
+            this._hangoutMonitorTask.Start();
+        }
+
+        public void StopMonitor()
+        {
+            this._hangoutMonitorCancellationTokenSource.Cancel();
+        }
+
+        private async void Monitor()
+        {
+            while (!this._hangoutMonitorCancellationTokenSource.IsCancellationRequested)
             {
+                Debug.WriteLine("DEBUG: Checking for hangouts");
+
                 var chromeProcesses = Process.GetProcessesByName(ChromeProcessName);
 
                 if (!chromeProcesses.Any() || string.IsNullOrEmpty(BrowserGoogleHangoutsTabText))
@@ -97,7 +114,14 @@ namespace Kuando.Control.Modules.GoogleHangouts.Models
                     }
                 }
 
-                await Task.Delay(5000);
+                try
+                {
+                    await Task.Delay(5000, this._hangoutMonitorCancellationToken);
+                }
+                catch (TaskCanceledException)
+                {
+                    this._hangoutMonitorCancellationTokenSource.Dispose();
+                }
             }
 
         }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Composition;
-using Kuando.Control.Infrastructure.Events;
-using Kuando.Control.Infrastructure.Models;
+using Kuando.Control.Modules.GoogleHangouts.Events;
+using Kuando.Control.Modules.GoogleHangouts.Models;
 using Kuando.Control.Modules.GoogleHangouts.Repositories;
 using Prism.Events;
 using Prism.Mvvm;
@@ -13,12 +13,8 @@ namespace Kuando.Control.Modules.GoogleHangouts.Views
     {
         #region Fields
 
-        private const string EnabledSettingKey = "Enabled";
-
         private readonly IEventAggregator _eventAggregator;
         private readonly SettingRepository _settingRepository;
-
-        private bool _isEnabled;
 
         #endregion
 
@@ -29,9 +25,6 @@ namespace Kuando.Control.Modules.GoogleHangouts.Views
         {
             this._eventAggregator = eventAggregator;
             this._settingRepository = settingRepository;
-
-            this._isEnabled = !string.IsNullOrEmpty(this._settingRepository.GetSetting(EnabledSettingKey)) &&
-                              Convert.ToBoolean(this._settingRepository.GetSetting(EnabledSettingKey));
         }
 
         #endregion
@@ -40,23 +33,15 @@ namespace Kuando.Control.Modules.GoogleHangouts.Views
 
         public bool IsEnabled
         {
-            get => this._isEnabled;
+            get => Convert.ToBoolean(this._settingRepository[SettingRepository.Enabled].Value);
 
             set
             {
-                if (value == this._isEnabled)
-                {
-                    return;
-                }
+                var newSetting = new Setting(SettingRepository.Enabled, value.ToString());
 
-                this._isEnabled = value;
+                this._settingRepository[SettingRepository.Enabled] = newSetting;
 
-                this._settingRepository.SaveSetting(EnabledSettingKey, this._isEnabled.ToString());
-
-                if (!this._isEnabled)
-                {
-                    this._eventAggregator.GetEvent<BusyLightColorEvent>().Publish(Color.Green);
-                }
+                this._eventAggregator.GetEvent<GoogleHangoutSettingEvent>().Publish(newSetting);
             }
         }
 

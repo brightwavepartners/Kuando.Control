@@ -64,6 +64,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Events\GoogleHangoutSettingEvent.cs" />
     <Compile Include="Models\ActiveChangedEventArgs.cs" />
     <Compile Include="Models\Hangout.cs" />
     <Compile Include="GoogleHangoutsModule.cs" />
