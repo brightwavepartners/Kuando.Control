@@ -1,14 +1,22 @@
-﻿using Kuando.Control.Modules.GoogleHangouts.Models;
+﻿using System.Collections.Generic;
 
 namespace Kuando.Control.Modules.GoogleHangouts.Repositories
 {
-    public interface IRepository
+    public interface IRepository<T>
     {
+        #region Properties
+
+        T this[object key] { get; set; }
+
+        #endregion
+
         #region Methods
 
-        void Get(string key);
+        void Add(T item);
 
-        void Update(Setting setting);
+        IList<T> FindAll();
+
+        void Remove(T item);
 
         #endregion
     }

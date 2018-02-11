@@ -1,7 +1,10 @@
-﻿using Prism.Mvvm;
-using System;
+﻿using System;
 using System.ComponentModel.Composition;
-using System.Configuration;
+using Kuando.Control.Infrastructure.Events;
+using Kuando.Control.Infrastructure.Models;
+using Kuando.Control.Modules.GoogleHangouts.Repositories;
+using Prism.Events;
+using Prism.Mvvm;
 
 namespace Kuando.Control.Modules.GoogleHangouts.Views
 {
@@ -10,9 +13,26 @@ namespace Kuando.Control.Modules.GoogleHangouts.Views
     {
         #region Fields
 
-        private const string EnabledConfigurationKey = "GoogleHangouts";
+        private const string EnabledSettingKey = "Enabled";
+
+        private readonly IEventAggregator _eventAggregator;
+        private readonly SettingRepository _settingRepository;
 
         private bool _isEnabled;
+
+        #endregion
+
+        #region Constructors
+
+        [ImportingConstructor]
+        public GoogleHangoutsSettingsViewModel(IEventAggregator eventAggregator, SettingRepository settingRepository)
+        {
+            this._eventAggregator = eventAggregator;
+            this._settingRepository = settingRepository;
+
+            this._isEnabled = !string.IsNullOrEmpty(this._settingRepository.GetSetting(EnabledSettingKey)) &&
+                              Convert.ToBoolean(this._settingRepository.GetSetting(EnabledSettingKey));
+        }
 
         #endregion
 
@@ -20,12 +40,7 @@ namespace Kuando.Control.Modules.GoogleHangouts.Views
 
         public bool IsEnabled
         {
-            get
-            {
-                this._isEnabled = Convert.ToBoolean(GetConfigValue(EnabledConfigurationKey));
-
-                return this._isEnabled;
-            }
+            get => this._isEnabled;
 
             set
             {
@@ -36,30 +51,15 @@ namespace Kuando.Control.Modules.GoogleHangouts.Views
 
                 this._isEnabled = value;
 
-                SetConfigValue(EnabledConfigurationKey, this._isEnabled.ToString());
+                this._settingRepository.SaveSetting(EnabledSettingKey, this._isEnabled.ToString());
+
+                if (!this._isEnabled)
+                {
+                    this._eventAggregator.GetEvent<BusyLightColorEvent>().Publish(Color.Green);
+                }
             }
         }
 
         #endregion
-
-        #region Methods
-
-        private static string GetConfigValue(string key)
-        {
-            var appConfig = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-
-            return appConfig.AppSettings.Settings[key].Value;
-        }
-
-        private static void SetConfigValue(string key, string value)
-        {
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-
-            config.AppSettings.Settings[key].Value = value;
-            config.Save(ConfigurationSaveMode.Modified);
-        }
-
-        #endregion
-
     }
 }

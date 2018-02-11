@@ -4,6 +4,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Automation;
+using Kuando.Control.Infrastructure.Events;
+using Kuando.Control.Infrastructure.Models;
+using Kuando.Control.Modules.GoogleHangouts.Repositories;
+using Prism.Events;
 
 namespace Kuando.Control.Modules.GoogleHangouts.Models
 {
@@ -12,9 +16,13 @@ namespace Kuando.Control.Modules.GoogleHangouts.Models
     {
         #region Fields
 
-        public event EventHandler<ActiveChangedEventArgs> OnActiveChanged;
+        private const string BrowserNewTabText = "New Tab";
+        private const string BrowserGoogleHangoutsTabText = "Google Hangouts";
+        private const string ChromeProcessName = "chrome";
 
         private bool _isActive;
+
+        public event EventHandler<ActiveChangedEventArgs> OnActiveChanged;
 
         #endregion
 
@@ -33,6 +41,10 @@ namespace Kuando.Control.Modules.GoogleHangouts.Models
 
                 this._isActive = value;
 
+                Debug.WriteLine(this._isActive
+                    ? $"DEBUG: Google Hangouts is active"
+                    : $"DEBUG: Google Hangouts is not active");
+
                 this.RaiseActiveChanged();
             }
         }
@@ -45,9 +57,9 @@ namespace Kuando.Control.Modules.GoogleHangouts.Models
         {
             while (true)
             {
-                var chromeProcesses = Process.GetProcessesByName("chrome");
+                var chromeProcesses = Process.GetProcessesByName(ChromeProcessName);
 
-                if (!chromeProcesses.Any())
+                if (!chromeProcesses.Any() || string.IsNullOrEmpty(BrowserGoogleHangoutsTabText))
                 {
                     this.IsActive = false;
                 }
@@ -64,7 +76,7 @@ namespace Kuando.Control.Modules.GoogleHangouts.Models
 
                         // to find the tabs we first need to locate something reliable - the 'New Tab' button 
                         var root = AutomationElement.FromHandle(chromeProcess.MainWindowHandle);
-                        var condNewTab = new PropertyCondition(AutomationElement.NameProperty, "New Tab");
+                        var condNewTab = new PropertyCondition(AutomationElement.NameProperty, BrowserNewTabText);
                         var elmNewTab = root.FindFirst(TreeScope.Descendants, condNewTab);
 
                         // get the tabstrip by getting the parent of the 'new tab' button 
@@ -80,7 +92,7 @@ namespace Kuando.Control.Modules.GoogleHangouts.Models
 
                             this.IsActive = elmTabStrip.FindAll(TreeScope.Children, condTabItem)
                                 .Cast<AutomationElement>()
-                                .Where(tabitem => tabitem.Current.Name.Contains("Google Hangouts")).ToList().Any();
+                                .Where(tabitem => tabitem.Current.Name.Contains(BrowserGoogleHangoutsTabText)).ToList().Any();
                         }
                     }
                 }

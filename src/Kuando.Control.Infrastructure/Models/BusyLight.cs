@@ -1,4 +1,7 @@
-﻿using Busylight;
+﻿using System.ComponentModel.Composition;
+using Busylight;
+using Kuando.Control.Infrastructure.Events;
+using Prism.Events;
 
 namespace Kuando.Control.Infrastructure.Models
 {

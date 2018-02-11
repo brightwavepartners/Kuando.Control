@@ -13,17 +13,11 @@
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="Auto"/>
-      <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
 
     <TextBlock Grid.Row="0" HorizontalAlignment="Center" FontWeight="Bold">Google Hangouts Settings</TextBlock>
 
     <CheckBox Grid.Row="1" Margin="0,10,0,0" IsChecked="{Binding IsEnabled}">Enabled</CheckBox>
-
-    <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,10,0,0">
-      <Label>Browser Tab Title</Label>
-      <TextBox Width="200"></TextBox>
-    </StackPanel>
   </Grid>
 
   

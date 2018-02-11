@@ -1,11 +1,12 @@
-﻿using Prism.Commands;
-using Prism.Mvvm;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
+using Kuando.Control.Infrastructure.Services;
+using Prism.Commands;
+using Prism.Mvvm;
 using Application = System.Windows.Application;
 
 namespace Kuando.Control.Views
@@ -15,6 +16,8 @@ namespace Kuando.Control.Views
     {
         #region Fields
 
+        private readonly BusyLightService _busyLightService;
+
         private bool _isExit;
         private NotifyIcon _notifyIcon;
 
@@ -22,8 +25,11 @@ namespace Kuando.Control.Views
 
         #region Constructors
 
-        public ShellViewModel()
+        [ImportingConstructor]
+        public ShellViewModel(BusyLightService busyLightService)
         {
+            this._busyLightService = busyLightService;
+
             if (Application.Current.MainWindow != null)
             {
                 Application.Current.MainWindow.Closing += this.OnShellClosing;
