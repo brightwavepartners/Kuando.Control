@@ -11,7 +11,25 @@ The tray application also provides a quick context menu to change the light to r
 
 <img src="https://brightwavepartners.blob.core.windows.net/kuando-control/contextmenu.png" alt="context menu">
 
-### How do I get started?
+### How do I run the application?
+
+At present, there are no pre-compiled binaries. Download the source and build to produce the required artifacts to run the program. Once compiled, you can run the binaries from the build output folder,
+but it would probably be more appropriate to copy the build output to a more permanent folder and run from there.
+
+The easiest method to have the application start with Windows is add it to the Startup folder. On your keyboard, press the Windows key and the R key together to bring up the Run dialog. In the Run dialog
+type **shell:startup** and click the **OK** button. Your Startup folder for Windows should open in Window File Explorer. Right-click in the folder and select **New** -> **Shortcut**. Either type in the
+path to program files from above, or use the **Browse** button to find the path. You will want to run the program **Kuando.Control.exe**. Click on the **Next** button. Give your new shortcut a name
+(e.g. Kuando Control) and click the **Finish** button. The application will now start everytime Windows starts.
+
+### How do I get started adding additional modules?
+
+If you are unfamiliar with Prism or MEF, it is highly recommended that you visit the links above and become familiar with the general concepts. It will help to understand if, or more likely when, things
+don't operate as expected how to fix them. Due to the dynamic nature of Prism and MEF, it can be difficult to track down unexpected behavior unless you understand how they operate and the conventions used.
+
+To explain how to add additional modules, the Google Hangouts module that is part of the solution will be used as an example.
+
+Add a new project to the solution and name it following the pattern Kuando.Control.Modules.yourmodulename.
+
 
 
 This project is still under development.....
