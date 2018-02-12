@@ -23,8 +23,8 @@ namespace Kuando.Control.Modules.VisualStudioTeamServices
         {
             this._regionManager = regionManager;
 
-            this._regionManager.RegisterViewWithRegion("NavigationRegion", typeof(Views.VisualStudioTeamServicesNavigation));
-            this._regionManager.RegisterViewWithRegion("SettingsRegion", typeof(Views.VisualStudioTeamServicesSettings));
+            //this._regionManager.RegisterViewWithRegion("NavigationRegion", typeof(Views.VisualStudioTeamServicesNavigation));
+            //this._regionManager.RegisterViewWithRegion("SettingsRegion", typeof(Views.VisualStudioTeamServicesSettings));
         }
 
         #endregion

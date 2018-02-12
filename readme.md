@@ -1,3 +1,19 @@
+### What is Kuando.Control?
+
+Kuando.Control is a Windows tray application that is built as a modular control application for the [Kuando BusyLight](http://www.plenom.com/products/kuando-busylight-uc-for-skype4b-lync-cisco-jabber-more/).
+
+The modularity aspect of this application is meant to provide the ability to "plug-in" additional modules to the control application in order to support new and additional functionality without having
+to write a new application from scratch for each control scenario.
+
+Modularity is built on top of the [Microsoft Prism Library](https://msdn.microsoft.com/en-us/library/gg406140.aspx) and the [Managed Extensibility Framework](https://docs.microsoft.com/en-us/dotnet/framework/mef/).
+
+The tray application also provides a quick context menu to change the light to red, yellow, or green.
+
+<img src="https://brightwavepartners.blob.core.windows.net/kuando-control/contextmenu.png" alt="context menu">
+
+### How do I get started?
+
+
 This project is still under development.....
 
 Adding a new module:

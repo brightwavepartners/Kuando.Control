@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{BB365880-AB00-4E1B-8FE5-58BACA3F3C4B}"
 	ProjectSection(SolutionItems) = preProject
-		readme.txt = readme.txt
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuando.Control.Modules.GoogleHangouts", "src\Kuando.Control.Modules.GoogleHangouts\Kuando.Control.Modules.GoogleHangouts.csproj", "{C2D3FC2E-5E86-4BD9-B757-6D35CD70EA07}"
