@@ -26,10 +26,26 @@ path to program files from above, or use the **Browse** button to find the path.
 If you are unfamiliar with Prism or MEF, it is highly recommended that you visit the links above and become familiar with the general concepts. It will help to understand if, or more likely when, things
 don't operate as expected how to fix them. Due to the dynamic nature of Prism and MEF, it can be difficult to track down unexpected behavior unless you understand how they operate and the conventions used.
 
-To explain how to add additional modules, the Google Hangouts module that is part of the solution will be used as an example.
+Refer to the Google Hangouts project that is already a part of the solution for guidance as you go through the following steps.
 
-Add a new project to the solution and name it following the pattern Kuando.Control.Modules.yourmodulename.
+1. Add a new project to **src** folder and name it following the pattern Kuando.Control.Modules._yourmodulename_.
+2. Add NuGet packages to your new project for  Prism.Wpf and Prism.Mef
+3. Add a reference to the .Net assembly System.ComponentModel.Composition
+4. As a convention, the name of the main class of a new Prism module is post-fixed with the word **module**. Add the module export attribute to the module class of your new module and have it implement Prism's **IModule** interface.
 
+```
+   [ModuleExport(typeof(GoogleHangoutsModule))]
+   public class GoogleHangoutsModule : IModule
+   {
+       public void Initialize()
+       {
+       }
+   }
+```
+5. Add a views folder
+6. Add a new WPF user control to the views folder to be used as the navigation view. Do not post-fix this file with the word **View**. The automatic ViewModel wiring between the View and the ViewModel is using a convention approach where the ViewModel will use whatever the name is for the View and try to locate a file with the same name post-fixed with the word **ViewModel** in the same folder as the view. The navigation view is simply used to show a navigation button on the left side of the application's dialog window to switch to your view when the button is clicked.
+7. Add a new class to the views folder for the ViewModel and name it following the pattern _yourviewname_ ViewModel.cs
+8. 
 
 
 This project is still under development.....
