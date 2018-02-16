@@ -27,7 +27,7 @@ namespace Kuando.Control.Infrastructure.Repositories
 
             foreach (var busyLight in busyLights)
             {
-                this._busyLights.Add(new BusyLight {Color = Color.Off, Id = busyLight.USBID}, busyLight);
+                this._busyLights.Add(new BusyLight {Color = Color.Green, Id = busyLight.USBID}, busyLight);
             }
         }
 

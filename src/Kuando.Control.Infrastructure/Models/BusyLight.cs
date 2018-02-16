@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.Composition;
-using Busylight;
-using Kuando.Control.Infrastructure.Events;
-using Prism.Events;
+﻿using Busylight;
 
 namespace Kuando.Control.Infrastructure.Models
 {
@@ -9,7 +6,19 @@ namespace Kuando.Control.Infrastructure.Models
     {
         #region Fields
 
+        private readonly SDK _busyLightInterface;
         private Color _color;
+
+        #endregion
+
+        #region Constructors
+
+        public BusyLight()
+        {
+            this._busyLightInterface = new SDK();
+
+            this._busyLightInterface.BusyLightChanged += this.BusyLightChanged;
+        }
 
         #endregion
 
@@ -38,26 +47,29 @@ namespace Kuando.Control.Infrastructure.Models
 
         #region Methods
 
+        private void BusyLightChanged(object sender, System.EventArgs e)
+        {
+            this.SetColor();
+        }
+
         private void SetColor()
         {
-            var sdk = new SDK();
-
             switch (this.Color)
             {
                 case Color.Red:
-                    sdk.Light(BusylightColor.Red);
+                    this._busyLightInterface.Light(BusylightColor.Red);
                     break;
                 case Color.Yellow:
-                    sdk.Light(BusylightColor.Yellow);
+                    this._busyLightInterface.Light(BusylightColor.Yellow);
                     break;
                 case Color.Green:
-                    sdk.Light(BusylightColor.Green);
+                    this._busyLightInterface.Light(BusylightColor.Green);
                     break;
                 case Color.Off:
-                    sdk.Light(BusylightColor.Off);
+                    this._busyLightInterface.Light(BusylightColor.Off);
                     break;
                 default:
-                    sdk.Light(BusylightColor.Off);
+                    this._busyLightInterface.Light(BusylightColor.Off);
                     break;
             }
         }

@@ -19,7 +19,7 @@ namespace Kuando.Control.Modules.GoogleHangouts
         #region Fields
 
         private readonly IEventAggregator _eventAggregator;
-        private readonly Hangout _hangout;
+        private readonly HangoutMonitor _hangout;
         private readonly IRegionManager _regionManager;
         private readonly SettingRepository _settingRepository;
 
@@ -28,10 +28,10 @@ namespace Kuando.Control.Modules.GoogleHangouts
         #region Constructors
 
         [ImportingConstructor]
-        public GoogleHangoutsModule(IRegionManager regionManager, IEventAggregator eventAggregator, SettingRepository settingRepository, Hangout hangout)
+        public GoogleHangoutsModule(IRegionManager regionManager, IEventAggregator eventAggregator, SettingRepository settingRepository, HangoutMonitor hangout)
         {
             this._eventAggregator = eventAggregator;
-            this._eventAggregator.GetEvent<GoogleHangoutSettingEvent>().Subscribe(this.OnGoogleHangoutSettingChanged);
+            this._eventAggregator.GetEvent<GoogleHangoutSettingEvent>().Subscribe(this.OnGoogleHangoutSettingChanged, ThreadOption.BackgroundThread);
 
             this._regionManager = regionManager;
             this._regionManager.RegisterViewWithRegion("NavigationRegion", () => ServiceLocator.Current.GetInstance<Views.GoogleHangoutsNavigation>());

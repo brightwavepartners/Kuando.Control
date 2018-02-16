@@ -26,7 +26,7 @@ namespace Kuando.Control.Infrastructure.Services
             this._busyLightRepository = busyLightRepository;
             this._eventAggregator = eventAggregator;
 
-            this._eventAggregator.GetEvent<BusyLightColorEvent>().Subscribe(this.SetColor, ThreadOption.PublisherThread);
+            this._eventAggregator.GetEvent<BusyLightColorEvent>().Subscribe(this.SetColor, ThreadOption.BackgroundThread);
 
         }
 
