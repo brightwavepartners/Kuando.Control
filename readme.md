@@ -44,6 +44,9 @@ Refer to the Google Hangouts project that is already a part of the solution for 
 ```
 5. Add a views folder
 6. Add a new WPF user control to the views folder to be used as the navigation view. Do not post-fix this file with the word **View**. The automatic ViewModel wiring between the View and the ViewModel is using a convention approach where the ViewModel will use whatever the name is for the View and try to locate a file with the same name post-fixed with the word **ViewModel** in the same folder as the view. The navigation view is simply used to show a navigation button on the left side of the application's dialog window to switch to your view when the button is clicked.
+
+<img src="https://brightwavepartners.blob.core.windows.net/kuando-control/navigation.png" alt="navigation">
+
 7. Add a new class to the views folder for the ViewModel and name it following the pattern _yourviewname_ ViewModel.cs
 8. 
 
