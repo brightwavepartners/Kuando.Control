@@ -1,8 +1,8 @@
-﻿using Prism.Mef.Modularity;
+﻿using System.ComponentModel.Composition;
+using System.Diagnostics;
+using Prism.Mef.Modularity;
 using Prism.Modularity;
 using Prism.Regions;
-using System.ComponentModel.Composition;
-using System.Diagnostics;
 
 namespace Kuando.Control.Modules.VisualStudioTeamServices
 {
@@ -23,8 +23,8 @@ namespace Kuando.Control.Modules.VisualStudioTeamServices
         {
             this._regionManager = regionManager;
 
-            //this._regionManager.RegisterViewWithRegion("NavigationRegion", typeof(Views.VisualStudioTeamServicesNavigation));
-            //this._regionManager.RegisterViewWithRegion("SettingsRegion", typeof(Views.VisualStudioTeamServicesSettings));
+            //this._regionManager.RegisterViewWithRegion(Constants.NavigationRegion, () => ServiceLocator.Current.GetInstance<Views.VisualStudioTeamServicesNavigation>());
+            //this._regionManager.RegisterViewWithRegion(Constants.SettingsRegion, () => ServiceLocator.Current.GetInstance<Views.VisualStudioTeamServicesSettings>());
         }
 
         #endregion

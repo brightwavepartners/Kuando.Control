@@ -1,4 +1,5 @@
-﻿using Busylight;
+﻿using System.Diagnostics;
+using Busylight;
 
 namespace Kuando.Control.Infrastructure.Models
 {
@@ -54,6 +55,8 @@ namespace Kuando.Control.Infrastructure.Models
 
         private void SetColor()
         {
+            Debug.WriteLine(this.Color);
+
             switch (this.Color)
             {
                 case Color.Red:

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Composition;
+using Kuando.Control.Infrastructure;
 using Kuando.Control.Infrastructure.Events;
 using Kuando.Control.Infrastructure.Models;
 using Kuando.Control.Modules.GoogleHangouts.Events;
@@ -34,8 +35,8 @@ namespace Kuando.Control.Modules.GoogleHangouts
             this._eventAggregator.GetEvent<GoogleHangoutSettingEvent>().Subscribe(this.OnGoogleHangoutSettingChanged, ThreadOption.BackgroundThread);
 
             this._regionManager = regionManager;
-            this._regionManager.RegisterViewWithRegion("NavigationRegion", () => ServiceLocator.Current.GetInstance<Views.GoogleHangoutsNavigation>());
-            this._regionManager.RegisterViewWithRegion("SettingsRegion", typeof(Views.GoogleHangoutsSettings));
+            this._regionManager.RegisterViewWithRegion(Constants.NavigationRegion, () => ServiceLocator.Current.GetInstance<Views.GoogleHangoutsNavigation>());
+            this._regionManager.RegisterViewWithRegion(Constants.SettingsRegion, () => ServiceLocator.Current.GetInstance<Views.GoogleHangoutsSettings>());
 
             this._hangout = hangout;
             hangout.OnActiveChanged += this.OnHangoutActiveChanged;

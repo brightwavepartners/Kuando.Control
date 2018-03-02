@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants.cs" />
     <Compile Include="Services\BusyLightService.cs" />
     <Compile Include="Events\BusyLightColorEvent.cs" />
     <Compile Include="Models\BusyLight.cs" />

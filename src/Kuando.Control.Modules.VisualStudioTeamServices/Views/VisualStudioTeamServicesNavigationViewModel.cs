@@ -3,6 +3,7 @@ using Prism.Mvvm;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Windows.Input;
+using Kuando.Control.Infrastructure;
 using Prism.Regions;
 
 namespace Kuando.Control.Modules.VisualStudioTeamServices.Views
@@ -44,7 +45,7 @@ namespace Kuando.Control.Modules.VisualStudioTeamServices.Views
 
         private void OnNavigate()
         {
-            this._regionManager.RequestNavigate("SettingsRegion", "VisualStudioTeamServicesSettings");
+            this._regionManager.RequestNavigate(Constants.SettingsRegion, "VisualStudioTeamServicesSettings");
         }
 
         #endregion

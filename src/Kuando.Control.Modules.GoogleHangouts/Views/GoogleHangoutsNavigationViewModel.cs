@@ -2,6 +2,7 @@
 using Prism.Mvvm;
 using System.ComponentModel.Composition;
 using System.Windows.Input;
+using Kuando.Control.Infrastructure;
 using Prism.Regions;
 
 namespace Kuando.Control.Modules.GoogleHangouts.Views
@@ -42,7 +43,7 @@ namespace Kuando.Control.Modules.GoogleHangouts.Views
 
         private void OnNavigate()
         {
-            this._regionManager.RequestNavigate("SettingsRegion", "GoogleHangoutsSettings");
+            this._regionManager.RequestNavigate(Constants.SettingsRegion, Constants.GoogleHangoutsSettingsViewName);
         }
 
         #endregion
