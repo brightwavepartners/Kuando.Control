@@ -51,7 +51,7 @@ Refer to the Google Hangouts project that is already a part of the solution for 
 8. 
 
 
-This project is still under development.....
+This project is still under development....
 
 Adding a new module:
 1. Add a new project following the nameing pattern Kuando.Control.Modules.<modulename>
