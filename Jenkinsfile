@@ -6,7 +6,7 @@ pipeline{
         stage('BuildAndTest') {
             steps {
                 checkout scm
-                bat 'powershell.exe -file ./build.ps1 -Configuration Debug -Target Default -ScriptArgs \'-StartupProject=Kuando.Control\''
+                bat 'powershell.exe -file ./build.ps1 -Configuration Debug -Target Default -ScriptArgs --StartupProject=Kuando.Control'
             }
         }
     }
