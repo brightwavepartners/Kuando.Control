@@ -1,0 +1,69 @@
+//////////////////////////////////////////////////////////////////////
+// ARGUMENTS
+//////////////////////////////////////////////////////////////////////
+
+var startupproject = Argument("startupproject", string.Empty);
+var configuration = Argument("configuration", "Debug");
+var target = Argument("target", "Default");
+
+//////////////////////////////////////////////////////////////////////
+// PREPARATION
+//////////////////////////////////////////////////////////////////////
+
+// Define directories.
+var buildDir = Directory("src") + Directory(startupproject) + Directory("bin") + Directory(configuration);
+
+//////////////////////////////////////////////////////////////////////
+// TASKS
+//////////////////////////////////////////////////////////////////////
+
+Task("Clean")
+    .Does(() =>
+{
+    Information(buildDir);
+
+    CleanDirectory(buildDir);
+});
+
+Task("Restore-NuGet-Packages")
+    .IsDependentOn("Clean")
+    .Does(() =>
+{
+  var solutions = GetFiles("./**/*.sln");
+
+  foreach (var solution in solutions)
+  {
+    NuGetRestore(solution);
+  }
+});
+
+Task("Build")
+    .IsDependentOn("Restore-NuGet-Packages")
+    .Does(() =>
+{
+  var solutions = GetFiles("./**/*.sln");
+
+  foreach (var solution in solutions)
+  {
+    MSBuild(solution, settings => settings.SetConfiguration(configuration));
+  }
+});
+
+Task("Run-Unit-Tests")
+    .IsDependentOn("Build")
+    .Does(() =>
+{
+});
+
+//////////////////////////////////////////////////////////////////////
+// TASK TARGETS
+//////////////////////////////////////////////////////////////////////
+
+Task("Default")
+    .IsDependentOn("Run-Unit-Tests");
+
+//////////////////////////////////////////////////////////////////////
+// EXECUTION
+//////////////////////////////////////////////////////////////////////
+
+RunTarget(target);

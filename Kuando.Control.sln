@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2027
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{BB365880-AB00-4E1B-8FE5-58BACA3F3C4B}"
 	ProjectSection(SolutionItems) = preProject
@@ -15,6 +15,18 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuando.Control.Modules.VisualStudioTeamServices", "src\Kuando.Control.Modules.VisualStudioTeamServices\Kuando.Control.Modules.VisualStudioTeamServices.csproj", "{B472B53E-F2BF-47A0-8805-27B643E04A06}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuando.Control.Infrastructure", "src\Kuando.Control.Infrastructure\Kuando.Control.Infrastructure.csproj", "{05E7957D-2B30-4B40-88A3-776498674646}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{347CCFF3-49FD-46E0-A1DC-06FBB9608C3E}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		build.cake = build.cake
+		build.ps1 = build.ps1
+		Jenkinsfile = Jenkinsfile
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{70BB0CBB-CACB-4A8E-BA76-FCFC055C3E04}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuando.Control.UnitTests", "test\Kuando.Control.UnitTests\Kuando.Control.UnitTests.csproj", "{2098DC07-CA3B-4D85-AC35-220E9CC2BCFD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,6 +50,10 @@ Global
 		{05E7957D-2B30-4B40-88A3-776498674646}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05E7957D-2B30-4B40-88A3-776498674646}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05E7957D-2B30-4B40-88A3-776498674646}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2098DC07-CA3B-4D85-AC35-220E9CC2BCFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2098DC07-CA3B-4D85-AC35-220E9CC2BCFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2098DC07-CA3B-4D85-AC35-220E9CC2BCFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2098DC07-CA3B-4D85-AC35-220E9CC2BCFD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -47,6 +63,7 @@ Global
 		{D73C355A-11D6-4933-A1E2-D433498018DB} = {BB365880-AB00-4E1B-8FE5-58BACA3F3C4B}
 		{B472B53E-F2BF-47A0-8805-27B643E04A06} = {BB365880-AB00-4E1B-8FE5-58BACA3F3C4B}
 		{05E7957D-2B30-4B40-88A3-776498674646} = {BB365880-AB00-4E1B-8FE5-58BACA3F3C4B}
+		{2098DC07-CA3B-4D85-AC35-220E9CC2BCFD} = {70BB0CBB-CACB-4A8E-BA76-FCFC055C3E04}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B29E64B9-24B2-4AFD-A1C1-0E649920CF65}
