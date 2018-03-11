@@ -8,13 +8,9 @@ pipeline{
 
     stages {
         stage('BuildAndTest') {
-            node {
-
-
-                steps {
-                    checkout scm
-                    bat 'powershell.exe -file ./build.ps1 -Configuration Debug -Target Default -ScriptArgs --StartupProject=Kuando.Control'
-                }
+            steps {
+                checkout scm
+                bat 'powershell.exe -file ./build.ps1 -Configuration Debug -Target Default -ScriptArgs --StartupProject=Kuando.Control'
             }
         }
     }
