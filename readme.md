@@ -1,3 +1,5 @@
+[![Build Status](http://brightwavepartners.com:8080/buildStatus/icon?job=brightwavepartners/Kuando.Control/master)](http://brightwavepartners.com:8080/job/brightwavepartners/job/Kuando.Control/job/master/)
+
 ### What is Kuando.Control?
 
 Kuando.Control is a Windows tray application that is built as a modular control application for the [Kuando BusyLight](http://www.plenom.com/products/kuando-busylight-uc-for-skype4b-lync-cisco-jabber-more/).
