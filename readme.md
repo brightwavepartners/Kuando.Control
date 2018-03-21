@@ -30,10 +30,15 @@ don't operate as expected how to fix them. Due to the dynamic nature of Prism an
 
 Refer to the Google Hangouts project that is already a part of the solution for guidance as you go through the following steps.
 
-1. Add a new project to **src** folder and name it following the pattern Kuando.Control.Modules._yourmodulename_.
-2. Add NuGet packages to your new project for  Prism.Wpf and Prism.Mef
+There are two sections required for adding a new module. The navigation section and the settings section. The navigation section is the left hand navigation tree that provides a button to navigate to your module's settings. The settings section is where you will actually allow the user to configure settings (if necessary) for your module.
+
+## Navigation
+1. Add a new **Class Library (.NET Framework)** project to **src** folder and name it following the pattern Kuando.Control.Modules.[yourmodulename].
+2. Add NuGet packages to your new project for Prism.Wpf and Prism.Mef
 3. Add a reference to the .Net assembly System.ComponentModel.Composition
-4. As a convention, the name of the main class of a new Prism module is post-fixed with the word **module**. Add the module export attribute to the module class of your new module and have it implement Prism's **IModule** interface.
+4. As a convention, the name of the main class of a new Prism module is post-fixed with the word **module**. If you kept the Class1.cs file from when the project was created, rename it to [yourmodulename] Module. If you did not keep the Class1.cs file, add a new class file and give it the name indicated previously. Make sure the name of the class in the code is also renamed to match the filename.
+5. Add using statements for Prism.Mef.Modularity and Prism.Modularity to the new class.
+4. Add the module export attribute to the module class of your new module and have it implement Prism's **IModule** interface.
 
 ```
    [ModuleExport(typeof(GoogleHangoutsModule))]
@@ -44,31 +49,56 @@ Refer to the Google Hangouts project that is already a part of the solution for 
        }
    }
 ```
+
+5. Add a constructor to the module and decorate it with the [ImportingConstructor] attribute.
+6. Add IRegionManager to the constructor parameters so that Prism's region manager will get injected. Prism's region manager is used to display items in regions on the UI.
+
+```
+        [ImportingConstructor]
+        public GoogleHangoutsModule(IRegionManager regionManager)
+        {
+        }
+```
+
 5. Add a views folder
-6. Add a new WPF user control to the views folder to be used as the navigation view. Do not post-fix this file with the word **View**. The automatic ViewModel wiring between the View and the ViewModel is using a convention approach where the ViewModel will use whatever the name is for the View and try to locate a file with the same name post-fixed with the word **ViewModel** in the same folder as the view. The navigation view is simply used to show a navigation button on the left side of the application's dialog window to switch to your view when the button is clicked.
+6. Add a new **User Control (WPF)** to the views folder to be used as the navigation view. Do not post-fix this file with the word **View**. The automatic ViewModel wiring between the View and the ViewModel is using a convention approach where the ViewModel will use whatever the name is for the View and try to locate a file with the same name post-fixed with the word **ViewModel** in the same folder as the view. The recommended name for the user control is [yourmodulename]Navigation, but you can technically name this any way you like as long as the ViewModel follows the convention indicated in the next step. The navigation view is simply used to show a navigation button on the left side of the application's dialog window to switch to your view when the button is clicked.
 
 <img src="https://brightwavepartners.blob.core.windows.net/kuando-control/navigation.png" alt="navigation">
 
-7. Add a new class to the views folder for the ViewModel and name it following the pattern _yourviewname_ ViewModel.cs
-8. 
+7. Add **ViewModelLocator.AutoWireViewModel="True"** to the .xaml of the new navigation view.
 
+```
+<UserControl x:Class="Kuando.Control.Modules.GoogleHangouts.Views.GoogleHangoutsNavigation"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mvvm="http://prismlibrary.com/"
+             mc:Ignorable="d" 
+             mvvm:ViewModelLocator.AutoWireViewModel="True">
+```
 
-This project is still under development....
+8. Add XAML to the view to present a button for your navigation. Use the GoogleHangoutsNavigation.xaml as an example if you want to keep the buttons looking the same across modules.
+9. Add a new **Class** to the views folder for the ViewModel and name it following the pattern [yourviewname]ViewModel.cs.
+10. Add the export attribute to the ViewModel Class and have it implement Prism's **BindableBase** base class.
+```
+    [Export]
+    public class GoogleHangoutsNavigationViewModel : BindableBase
+    {
+    }
+```
+11. Now that you have a navigation view class defined, go back to the constructor in your module class and tell the region manager to load your navigation view into the navigation region so that your navigation button will show on the UI.
 
-Adding a new module:
-1. Add a new project following the nameing pattern Kuando.Control.Modules.<modulename>
-2. Add NuGet packages Prism.Wpf and Prism.Mef
-3. Add a reference to the .Net assembly System.ComponentModel.Composition
-4. Add module export attribute to the new project's main class (e.g. [ModuleExport(typeof(Class1))])
-5. Descend the new project's main class from IModule and implement interface
-6. Add Views folder
-7. Add a new WPF user control to the views folder to be used as the navigation view
-8. Add a new view model class to the views folder and name it following the pattern <viewname>ViewModel.cs
-9. Descend the view model from BindableBase
-10. Add [Export] attribute to view model class
-11. Add a constructor to the module class, add [ImportingConstructor] attribute, and add IRegionManager to the constructors parameter list
-12. In the module's constructor, add your new navigation view to the NavigationRegion
-13. Add mvvm:ViewModelLocator.AutoWireViewModel="True" to view's xaml
-14. Add post-build event
-15. Add a new WPF user control to the views folder to be used as the settings view
-16. Repeat steps 8-13
+```
+        [ImportingConstructor]
+        public GoogleHangoutsModule(IRegionManager regionManager)
+        {
+            this._regionManager = regionManager;
+            this._regionManager.RegisterViewWithRegion(Constants.NavigationRegion, () => ServiceLocator.Current.GetInstance<Views.GoogleHangoutsNavigation>());
+```
+
+12. Because we are using MEF to dynamically load modules, there is no hard reference from the main application (e.g. **Kuando.Control**) to the module you created. Because of this, Visual Studio does not know about your module so will not copy the necessary .dll files for your module to the main application's output directory to be loaded by MEF. To solve this, you need to add a post-build event to your module's project properties to copy the output files from your module's output directory to the main application's output directory, navigate to the **Build Events** tab of the project properties pages and add the line **xcopy $(TargetFileName) "../../../Kuando.Control/$(OutDir)" /y**. This will force the output files from your module to be copied to the output directory of the main application each time the solution is built thereby allowing MEF to discover your module and load it.
+
+## Settings Section
+
+The process for adding the items for your module's settings is exactly the same as that for the navigation section with the exception of recommended naming of each item. Refer to the Google Hangouts project for guidance on naming conventions.
