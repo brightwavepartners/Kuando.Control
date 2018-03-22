@@ -32,7 +32,7 @@ Refer to the Google Hangouts project that is already a part of the solution for 
 
 There are two sections required for adding a new module. The navigation section and the settings section. The navigation section is the left hand navigation tree that provides a button to navigate to your module's settings. The settings section is where you will actually allow the user to configure settings (if necessary) for your module.
 
-## Navigation
+#### Navigation
 1. Add a new **Class Library (.NET Framework)** project to **src** folder and name it following the pattern Kuando.Control.Modules.[yourmodulename].
 2. Add NuGet packages to your new project for Prism.Wpf and Prism.Mef
 3. Add a reference to the .Net assembly System.ComponentModel.Composition
