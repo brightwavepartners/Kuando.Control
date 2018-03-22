@@ -95,6 +95,7 @@ public GoogleHangoutsModule(IRegionManager regionManager)
 {
     this._regionManager = regionManager;
     this._regionManager.RegisterViewWithRegion(Constants.NavigationRegion, () => ServiceLocator.Current.GetInstance<Views.GoogleHangoutsNavigation>());
+}
 ```
 
 12. Because we are using MEF to dynamically load modules, there is no hard reference from the main application (e.g. **Kuando.Control**) to the module you created. Because of this, Visual Studio does not know about your module so will not copy the necessary .dll files for your module to the main application's output directory to be loaded by MEF. To solve this, you need to add a post-build event to your module's project properties to copy the output files from your module's output directory to the main application's output directory, navigate to the **Build Events** tab of the project properties pages and add the line **xcopy $(TargetFileName) "../../../Kuando.Control/$(OutDir)" /y**. This will force the output files from your module to be copied to the output directory of the main application each time the solution is built thereby allowing MEF to discover your module and load it.
