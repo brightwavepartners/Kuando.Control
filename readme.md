@@ -41,23 +41,23 @@ There are two sections required for adding a new module. The navigation section 
 4. Add the module export attribute to the module class of your new module and have it implement Prism's **IModule** interface.
 
 ```
-   [ModuleExport(typeof(GoogleHangoutsModule))]
-   public class GoogleHangoutsModule : IModule
+[ModuleExport(typeof(GoogleHangoutsModule))]
+public class GoogleHangoutsModule : IModule
+{
+   public void Initialize()
    {
-       public void Initialize()
-       {
-       }
    }
+}
 ```
 
 5. Add a constructor to the module and decorate it with the [ImportingConstructor] attribute.
 6. Add IRegionManager to the constructor parameters so that Prism's region manager will get injected. Prism's region manager is used to display items in regions on the UI.
 
 ```
-        [ImportingConstructor]
-        public GoogleHangoutsModule(IRegionManager regionManager)
-        {
-        }
+[ImportingConstructor]
+public GoogleHangoutsModule(IRegionManager regionManager)
+{
+}
 ```
 
 5. Add a views folder
@@ -82,19 +82,19 @@ There are two sections required for adding a new module. The navigation section 
 9. Add a new **Class** to the views folder for the ViewModel and name it following the pattern [yourviewname]ViewModel.cs.
 10. Add the export attribute to the ViewModel Class and have it implement Prism's **BindableBase** base class.
 ```
-    [Export]
-    public class GoogleHangoutsNavigationViewModel : BindableBase
-    {
-    }
+[Export]
+public class GoogleHangoutsNavigationViewModel : BindableBase
+{
+}
 ```
 11. Now that you have a navigation view class defined, go back to the constructor in your module class and tell the region manager to load your navigation view into the navigation region so that your navigation button will show on the UI.
 
 ```
-        [ImportingConstructor]
-        public GoogleHangoutsModule(IRegionManager regionManager)
-        {
-            this._regionManager = regionManager;
-            this._regionManager.RegisterViewWithRegion(Constants.NavigationRegion, () => ServiceLocator.Current.GetInstance<Views.GoogleHangoutsNavigation>());
+[ImportingConstructor]
+public GoogleHangoutsModule(IRegionManager regionManager)
+{
+    this._regionManager = regionManager;
+    this._regionManager.RegisterViewWithRegion(Constants.NavigationRegion, () => ServiceLocator.Current.GetInstance<Views.GoogleHangoutsNavigation>());
 ```
 
 12. Because we are using MEF to dynamically load modules, there is no hard reference from the main application (e.g. **Kuando.Control**) to the module you created. Because of this, Visual Studio does not know about your module so will not copy the necessary .dll files for your module to the main application's output directory to be loaded by MEF. To solve this, you need to add a post-build event to your module's project properties to copy the output files from your module's output directory to the main application's output directory, navigate to the **Build Events** tab of the project properties pages and add the line **xcopy $(TargetFileName) "../../../Kuando.Control/$(OutDir)" /y**. This will force the output files from your module to be copied to the output directory of the main application each time the solution is built thereby allowing MEF to discover your module and load it.
