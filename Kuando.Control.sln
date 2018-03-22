@@ -28,6 +28,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{70BB0CBB-C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuando.Control.UnitTests", "test\Kuando.Control.UnitTests\Kuando.Control.UnitTests.csproj", "{2098DC07-CA3B-4D85-AC35-220E9CC2BCFD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuando.Control.Modules.SkypeForBusiness", "src\Kuando.Control.Modules.SkypeForBusiness\Kuando.Control.Modules.SkypeForBusiness.csproj", "{BA751219-ECFD-4758-BE7B-451EB429C5FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +56,10 @@ Global
 		{2098DC07-CA3B-4D85-AC35-220E9CC2BCFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2098DC07-CA3B-4D85-AC35-220E9CC2BCFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2098DC07-CA3B-4D85-AC35-220E9CC2BCFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA751219-ECFD-4758-BE7B-451EB429C5FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA751219-ECFD-4758-BE7B-451EB429C5FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA751219-ECFD-4758-BE7B-451EB429C5FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA751219-ECFD-4758-BE7B-451EB429C5FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +70,7 @@ Global
 		{B472B53E-F2BF-47A0-8805-27B643E04A06} = {BB365880-AB00-4E1B-8FE5-58BACA3F3C4B}
 		{05E7957D-2B30-4B40-88A3-776498674646} = {BB365880-AB00-4E1B-8FE5-58BACA3F3C4B}
 		{2098DC07-CA3B-4D85-AC35-220E9CC2BCFD} = {70BB0CBB-CACB-4A8E-BA76-FCFC055C3E04}
+		{BA751219-ECFD-4758-BE7B-451EB429C5FC} = {BB365880-AB00-4E1B-8FE5-58BACA3F3C4B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B29E64B9-24B2-4AFD-A1C1-0E649920CF65}
