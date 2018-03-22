@@ -1,4 +1,4 @@
-![BuildStatus](brightwavepartners.com:8080/job/brightwavepartners/job/Kuando.Control/job/master/badge/icon)
+[![Build Status](http://brightwavepartners.com:8080/buildStatus/icon?job=brightwavepartners/Kuando.Control/master)](http://brightwavepartners.com:8080/job/brightwavepartners/job/Kuando.Control/job/master/)
 
 ### What is Kuando.Control?
 
