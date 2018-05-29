@@ -7,6 +7,6 @@
              mc:Ignorable="d" 
              mvvm:ViewModelLocator.AutoWireViewModel="True">
   <Grid>
-    <Button Width="110" Height="30" Command="{Binding Path=NavigateCommand}">Google Hangouts</Button>
+    <Button Width="140" Height="30" Command="{Binding Path=NavigateCommand}">Google Hangouts</Button>
   </Grid>
 </UserControl>

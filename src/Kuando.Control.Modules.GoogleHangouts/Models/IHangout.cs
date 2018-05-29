@@ -4,7 +4,7 @@
     {
         #region Methods
 
-        bool IsHangoutActive();
+        bool IsActive();
 
         #endregion
     }

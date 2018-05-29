@@ -67,7 +67,7 @@
     <Compile Include="Models\ChromeHangout.cs" />
     <Compile Include="Events\GoogleHangoutSettingEvent.cs" />
     <Compile Include="Models\ActiveChangedEventArgs.cs" />
-    <Compile Include="Models\HangoutMonitor.cs" />
+    <Compile Include="HangoutMonitor.cs" />
     <Compile Include="GoogleHangoutsModule.cs" />
     <Compile Include="Models\IHangout.cs" />
     <Compile Include="Models\InternetExplorerHangout.cs" />

@@ -10,6 +10,8 @@
 
         public static string SettingsRegion => "SettingsRegion";
 
+        public static string SkypeForBusinessSettingsViewName = "SkypeForBusinessSettings";
+
         #endregion
     }
 }

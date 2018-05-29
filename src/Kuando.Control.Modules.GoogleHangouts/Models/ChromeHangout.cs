@@ -19,7 +19,9 @@ namespace Kuando.Control.Modules.GoogleHangouts.Models
 
         #region Methods
 
-        public bool IsHangoutActive()
+        // BUG: there is a bug here where this routine only notices that a hangout is running if the hangouts window is on top.
+        // BUG: if the hangouts window is not the topmost chrome tab, this routine will not notice hangouts is running.
+        public bool IsActive()
         {
             var chromeProcesses = Process.GetProcessesByName(ChromeProcessName);
 

@@ -30,9 +30,14 @@ don't operate as expected how to fix them. Due to the dynamic nature of Prism an
 
 Refer to the Google Hangouts project that is already a part of the solution for guidance as you go through the following steps.
 
-There are two sections required for adding a new module. The navigation section and the settings section. The navigation section is the left hand navigation tree that provides a button to navigate to your module's settings. The settings section is where you will actually allow the user to configure settings (if necessary) for your module.
+There are three components required for adding a new module
+1. The main module - the main component that generally contains any business logic for your module
+2. The navigation section - the left hand navigation tree that provides a button to navigate to your module's settings
+3. The settings section - the area where settings for the module can be configured (if necessary)
 
-#### Navigation
+<img src="https://brightwavepartners.blob.core.windows.net/kuando-control/sectionlayout.png" alt="section layout">
+
+#### Main Module
 1. Add a new **Class Library (.NET Framework)** project to **src** folder and name it following the pattern Kuando.Control.Modules.[yourmodulename].
 2. Add NuGet packages to your new project for Prism.Wpf and Prism.Mef
 3. Add a reference to the .Net assembly System.ComponentModel.Composition
@@ -60,12 +65,17 @@ public GoogleHangoutsModule(IRegionManager regionManager)
 }
 ```
 
-5. Add a views folder
-6. Add a new **User Control (WPF)** to the views folder to be used as the navigation view. Do not post-fix this file with the word **View**. The automatic ViewModel wiring between the View and the ViewModel is using a convention approach where the ViewModel will use whatever the name is for the View and try to locate a file with the same name post-fixed with the word **ViewModel** in the same folder as the view. The recommended name for the user control is [yourmodulename]Navigation, but you can technically name this any way you like as long as the ViewModel follows the convention indicated in the next step. The navigation view is simply used to show a navigation button on the left side of the application's dialog window to switch to your view when the button is clicked.
+7. Because we are using MEF to dynamically load modules, there is no hard reference from the main application (e.g. **Kuando.Control**) to the module you created. Because of this, Visual Studio does not know about your module so will not copy the necessary .dll files for your module to the main application's output directory to be loaded by MEF. To solve this, you need to add a post-build event to your module's project properties to copy the output files from your module's output directory to the main application's output directory, navigate to the **Build Events** tab of the project properties pages and add the line **xcopy $(TargetFileName) "../../../Kuando.Control/$(OutDir)" /y**. This will force the output files from your module to be copied to the output directory of the main application each time the solution is built thereby allowing MEF to discover your module and load it.
+
+#### Navigation Section
+
+1. Add a views folder if it doesn't already exist
+2. Add a new **User Control (WPF)** to the views folder to be used as the navigation view. Do not post-fix this file with the word **View**. The automatic ViewModel wiring between the View and the ViewModel is using a convention approach where the ViewModel will use whatever the name is for the View and try to locate a file with the same name post-fixed with the word **ViewModel** in the same folder as the view. The recommended name for the user control is [yourmodulename]Navigation, but you can technically name this any way you like as long as the ViewModel follows the convention indicated in the next step. The navigation view is simply used to show a navigation button on the left side of the application's dialog window to switch to your view when the button is clicked.
 
 <img src="https://brightwavepartners.blob.core.windows.net/kuando-control/navigation.png" alt="navigation">
 
-7. Add **ViewModelLocator.AutoWireViewModel="True"** to the .xaml of the new navigation view.
+3. Add **xmlns:mvvm="http://prismlibrary.com/"** to the .xaml of the new navigation view.
+4. Add **ViewModelLocator.AutoWireViewModel="True"** to the .xaml of the new navigation view so that the code now looks like this:
 
 ```
 <UserControl x:Class="Kuando.Control.Modules.GoogleHangouts.Views.GoogleHangoutsNavigation"
@@ -78,8 +88,33 @@ public GoogleHangoutsModule(IRegionManager regionManager)
              mvvm:ViewModelLocator.AutoWireViewModel="True">
 ```
 
-8. Add XAML to the view to present a button for your navigation. Use the GoogleHangoutsNavigation.xaml as an example if you want to keep the buttons looking the same across modules.
-9. Add a new **Class** to the views folder for the ViewModel and name it following the pattern [yourviewname]ViewModel.cs.
+5. Add XAML to the view to present a button for your navigation. Use the GoogleHangoutsNavigation.xaml as an example if you want to keep the buttons looking the same across modules.
+6. In the code-behind for the view, add a using statement for System.ComponentModel.Composition. I know, when following the MVVM pattern we don't like to edit the code-behind, but you won't be adding any business logic here. Just some supporting statements to get Prism and MEF to be able to discover your new view.
+7. In the code-behind for the view, add the export attribute to the class so the code looks like this.
+
+```
+using System.ComponentModel.Composition;
+using System.Windows.Controls;
+
+namespace Kuando.Control.Modules.GoogleHangouts.Views
+{
+    [Export]
+    public partial class GoogleHangoutsNavigation : UserControl
+    {
+        #region Constructors
+
+        public GoogleHangoutsNavigation()
+        {
+            this.InitializeComponent();
+        }
+
+        #endregion
+    }
+}
+```
+
+8. Add a new **Class** to the views folder for the ViewModel and name it following the pattern [yourviewname]ViewModel.cs.
+9. Add a using statement for System.ComponentModel.Composition.
 10. Add the export attribute to the ViewModel Class and have it implement Prism's **BindableBase** base class.
 ```
 [Export]
@@ -87,7 +122,8 @@ public class GoogleHangoutsNavigationViewModel : BindableBase
 {
 }
 ```
-11. Now that you have a navigation view class defined, go back to the constructor in your module class and tell the region manager to load your navigation view into the navigation region so that your navigation button will show on the UI.
+11. **ADD DETAILS ABOUT REGION NAVIGATION**
+12. Now that you have a navigation view class defined, go back to the constructor in your module class and tell the region manager to load your navigation view into the navigation region so that your navigation button will show on the UI.
 
 ```
 [ImportingConstructor]
@@ -98,8 +134,87 @@ public GoogleHangoutsModule(IRegionManager regionManager)
 }
 ```
 
-12. Because we are using MEF to dynamically load modules, there is no hard reference from the main application (e.g. **Kuando.Control**) to the module you created. Because of this, Visual Studio does not know about your module so will not copy the necessary .dll files for your module to the main application's output directory to be loaded by MEF. To solve this, you need to add a post-build event to your module's project properties to copy the output files from your module's output directory to the main application's output directory, navigate to the **Build Events** tab of the project properties pages and add the line **xcopy $(TargetFileName) "../../../Kuando.Control/$(OutDir)" /y**. This will force the output files from your module to be copied to the output directory of the main application each time the solution is built thereby allowing MEF to discover your module and load it.
-
 ## Settings Section
 
-The process for adding the items for your module's settings is exactly the same as that for the navigation section with the exception of recommended naming of each item. Refer to the Google Hangouts project for guidance on naming conventions.
+1. Add a views folder if it doesn't already exist
+2. Add a new **User Control (WPF)** to the views folder to be used as the settings view. Do not post-fix this file with the word **View**. The automatic ViewModel wiring between the View and the ViewModel is using a convention approach where the ViewModel will use whatever the name is for the View and try to locate a file with the same name post-fixed with the word **ViewModel** in the same folder as the view. The recommended name for the user control is [yourmodulename]Settings, but you can technically name this any way you like as long as the ViewModel follows the convention indicated in the next step. The settings view is used to show a configuration area where settings for your module can be configured.
+
+<img src="https://brightwavepartners.blob.core.windows.net/kuando-control/settings.png" alt="settings">
+
+3. Add **xmlns:mvvm="http://prismlibrary.com/"** to the .xaml of the new settings view.
+4. [OPTIONAL] You can hard-code the size of your settings view, but it is probably more appropriate to size the settings view to the same size as the parent container in which it sits and have it centered there.  To do that, add the following to the .xaml of the new settings view:
+
+```
+Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContentControl}}, Path=ActualWidth}"
+VerticalAlignment="Top"
+HorizontalAlignment="Left"
+``` 
+
+5. Add **ViewModelLocator.AutoWireViewModel="True"** to the .xaml of the new settings view so that the code now looks like this:
+
+```
+<UserControl x:Class="Kuando.Control.Modules.GoogleHangouts.Views.GoogleHangoutsSettings"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mvvm="http://prismlibrary.com/"
+             Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContentControl}}, Path=ActualWidth}"
+             VerticalAlignment="Top"
+             HorizontalAlignment="Left"
+             mvvm:ViewModelLocator.AutoWireViewModel="True">
+```
+
+6. Add XAML to the view to present settings to the user.
+7. In the code-behind for the view, add a using statement for System.ComponentModel.Composition.
+8. In the code-behind for the view, add the export attribute to the class so the code looks like this.
+
+```
+using System.ComponentModel.Composition;
+using System.Windows.Controls;
+
+namespace Kuando.Control.Modules.GoogleHangouts.Views
+{
+    [Export]
+    public partial class GoogleHangoutsSettings : UserControl
+    {
+        #region Constructors
+
+        public GoogleHangoutsSettings()
+        {
+            this.InitializeComponent();
+        }
+
+
+        #endregion
+    }
+}
+```
+
+9. Add a new **Class** to the views folder for the ViewModel and name it following the pattern [yourviewname]ViewModel.cs.
+10. Add a using statement for System.ComponentModel.Composition.
+11. Add the export attribute to the ViewModel Class and have it implement Prism's **BindableBase** base class.
+```
+[Export]
+public class GoogleHangoutsSettingsViewModel : BindableBase
+{
+}
+```
+12. **ADD DETAILS ABOUT REGION NAVIGATION**
+13. Now that you have a settings view class defined, go back to the constructor in your module class and tell the region manager to load your settings view into the settings region so that your settings area will show on the UI.
+
+```
+[ImportingConstructor]
+public GoogleHangoutsModule(IRegionManager regionManager)
+{
+    this._regionManager = regionManager;
+    this._regionManager.RegisterViewWithRegion(Constants.NavigationRegion, () => ServiceLocator.Current.GetInstance<Views.GoogleHangoutsNavigation>());
+    this._regionManager.RegisterViewWithRegion(Constants.SettingsRegion, () => ServiceLocator.Current.GetInstance<Views.GoogleHangoutsSettings>());
+}
+```
+
+## REMINDER
+
+Because this project is using Prism and MEF to dynamically load things and there is no hard-references between the modules, if you make changes to a module you MUST build the module so that the Post-Build event runs and copies
+the new updated .dll for the changed module to the main application's output directory. If you change a module and just run the application without building your changed module, the new .dll will not be copied to the main
+application's output directory and you will not see your changes. This will be the cause of much frustration when you forget to do this.

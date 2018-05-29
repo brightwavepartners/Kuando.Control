@@ -14,7 +14,7 @@ namespace Kuando.Control.Modules.GoogleHangouts.Models
 
         #region Methods
 
-        public bool IsHangoutActive()
+        public bool IsActive()
         {
             foreach (InternetExplorer ieInst in new ShellWindows())
             {
