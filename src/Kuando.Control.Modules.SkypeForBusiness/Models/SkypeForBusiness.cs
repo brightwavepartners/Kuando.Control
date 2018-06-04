@@ -23,6 +23,8 @@ namespace Kuando.Control.Modules.SkypeForBusiness.Models
         public SkypeForBusiness(IEventAggregator eventAggregator)
         {
             this._eventAggregator = eventAggregator;
+
+            // TODO: this line will throw an exception if SFB is not running
             this._skypeClient = LyncClient.GetClient();
 
             this._skypeClient.ConversationManager.ConversationAdded += this.ConversationAdded;
